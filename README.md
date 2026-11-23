@@ -10,11 +10,12 @@ Chatbot con IA para aspirantes y estudiantes de la Universidad del Valle de Guat
 | Fase | Estado |
 |---|---|
 | 0. Elegir el modelo | ✅ |
-| 1. Base y conocimiento: migraciones, ingesta, búsqueda híbrida | ✅ embeddings `openai/text-embedding-3-small` (Acierto@4 25/26), umbral 0.40 |
+| 1. Base y conocimiento: migraciones, ingesta, búsqueda híbrida | ✅ embeddings `openai/text-embedding-3-small` (Acierto@4 25/26). Umbral 0.35, ajustado con los documentos reales |
 | 2. Chat con streaming (prototipo mínimo) | ✅ examen contra el backend: **99.3**, 8/8 trampas, 0 fallas graves, primer token p50 2.2 s y p90 2.7 s |
-| 3. Widget | pendiente |
-| 4. Panel de preguntas frecuentes | pendiente |
-| 5. Producción (hosting a definir por la UVG) | pendiente |
+| 3. Interfaz web | ✅ página de chat completa en `/`. Pendiente: versión incrustable como burbuja |
+| 4. Panel de administración | ✅ `/admin`: documentos, preguntas frecuentes, sin respuesta y resumen |
+| 5. Conocimiento real | ✅ 9 documentos tomados de uvg.edu.gt el 17 de noviembre de 2026 |
+| 6. Producción | pendiente: hosting a definir por la UVG |
 
 ---
 
@@ -240,17 +241,20 @@ chatbotUVG/
 │   │   ├── busqueda.py          búsqueda híbrida vector + texto (RRF) y umbral
 │   │   ├── evaluar_busqueda.py  mide la búsqueda con las preguntas del examen
 │   │   ├── prompt.py            prompt de sistema + armado de mensajes
+│   │   ├── charla.py            detecta saludos y cortesía (se saltan la búsqueda)
 │   │   ├── chat.py              orquesta una respuesta (topes → búsqueda → LLM → posproceso → BD)
 │   │   ├── posproceso.py        【n】→[n], emojis, citas válidas, "no sé", filtro de salida
 │   │   ├── privacidad.py        enmascara DPI, carné, correo, teléfono y tarjeta; hash de IP
 │   │   ├── limites.py           topes por IP y global (en la BD)
 │   │   ├── rutas/publico.py     /api/chat (SSE), /api/feedback, /api/sugerencias, /api/salud
+│   │   ├── admin.py             panel /admin: sesión, documentos, preguntas, resumen
 │   │   └── main.py              app FastAPI, retención, /api/buscar (desarrollo)
 │   ├── migraciones/001_inicial.sql
+│   ├── web/                     página del chat (index.html) y del panel (admin.html)
 │   ├── tests/
 │   └── requirements.txt
 ├── conocimiento/                documentos fuente + _areas.yaml
-├── examen/                      examen de modelos (prueba de regresión)
+├── examen/                      examen de modelos y corpus ficticio de las pruebas
 ├── ARQUITECTURA.md
 └── investigacion_modelos_uvg.md
 ```

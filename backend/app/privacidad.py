@@ -49,3 +49,15 @@ def hash_ip(ip: str | None) -> str | None:
     if not ip:
         return None
     return hashlib.sha256(f"{settings().secreto_sesion}|{ip}".encode()).hexdigest()[:32]
+
+
+_MARCAS = re.compile(r"\s*\[(?:CORREO|TARJETA|DPI|CARNÉ|TELÉFONO)\]")
+
+
+def sin_marcas(texto: str) -> str:
+    """
+    Quita las marcas [DPI], [CORREO], etc. de un texto YA enmascarado. Se usa solo para la consulta
+    al buscador: la marca no dice nada de la pregunta y baja la similitud con el documento correcto
+    ("Mi DPI es [DPI], ¿cuánto cuesta el examen?" quedaba bajo el umbral).
+    """
+    return re.sub(r"\s{2,}", " ", _MARCAS.sub("", texto)).strip()

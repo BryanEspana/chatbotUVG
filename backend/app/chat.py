@@ -29,7 +29,7 @@ from .ingesta import cargar_areas
 from .limites import registrar_pregunta
 from .openrouter import ErrorOpenRouter, UsoChat, chat_stream, embeddings, preparar_consulta
 from .posproceso import NormalizadorStream, citas, dice_no_saber, filtra_prompt, tiene_contacto
-from .privacidad import enmascarar, hash_ip
+from .privacidad import enmascarar, hash_ip, sin_marcas
 from .prompt import armar_mensajes
 
 log = logging.getLogger("chatbot")
@@ -127,9 +127,11 @@ async def responder(
     try:
         # Dos vectores en una sola llamada: el de búsqueda (con el contexto del seguimiento) y el de
         # la pregunta sola, que es el que se guarda para agrupar preguntas frecuentes en el panel.
+        # Sin las marcas [DPI], [CORREO]...: no aportan nada a la búsqueda y bajan la similitud.
+        consulta = sin_marcas(pregunta_m)
         vectores, _ = await embeddings([
-            preparar_consulta(armar_consulta(pregunta_m, previas)),
-            preparar_consulta(pregunta_m),
+            preparar_consulta(armar_consulta(consulta, [sin_marcas(p) for p in previas])),
+            preparar_consulta(consulta),
         ])
     except ErrorOpenRouter as e:
         log.error("embeddings: %s", e)

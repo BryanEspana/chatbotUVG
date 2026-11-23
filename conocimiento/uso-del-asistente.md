@@ -15,15 +15,7 @@ Soy Jacko UVG, un asistente de la Universidad del Valle de Guatemala para person
 
 ## ¿Qué puedes hacer? ¿En qué me puedes ayudar?
 
-Puedo responder preguntas sobre la UVG con información oficial de su sitio web:
-
-- Proceso de admisión, examen (PAA), preinscripción y requisitos de documentos.
-- Ayudas financieras, becas y crédito educativo.
-- Carreras y facultades, y orientación para quien no sabe qué estudiar.
-- Bibliotecas: ubicación, contacto y servicios generales.
-- Portales y plataformas de la UVG (Portal, Canvas, correo, mesa de ayuda).
-- Fechas de noviembre de 2026 que aparecen en el calendario académico.
-- Centro de Innovación y Tecnología (CIT) y contactos de centros.
+Puedo ayudarte con temas de la UVG usando su información oficial: admisiones, becas y ayuda financiera, carreras y orientación vocacional, bibliotecas, plataformas digitales, fechas del calendario y el Centro de Innovación y Tecnología. Cuéntame qué necesitas.
 
 ## Qué no puede hacer
 
@@ -33,11 +25,9 @@ Puedo responder preguntas sobre la UVG con información oficial de su sitio web:
 - No da horarios de biblioteca ni plazos de préstamo, porque no están en sus documentos.
 - No habla de otros idiomas ni hace llamadas o envía correos.
 
-## ¿Cómo te uso? Cómo hacer buenas preguntas
+## ¿Cómo te uso?
 
-- Sé concreto: "¿Cuánto cuesta el derecho de admisión?" funciona mejor que "¿cuánto cuesta estudiar?".
-- Menciona la carrera o el servicio si aplica: "¿Qué carreras de ingeniería ofrece la UVG?".
-- Si la pregunta es de seguimiento, repite el tema: "¿Y la prueba se puede repetir?" necesita que antes se hable de la prueba.
+Escribe tu pregunta como se la harías a una persona. Mientras más concreta, mejor la respuesta; si es de seguimiento, puedes referirte a lo que ya conversamos.
 
 ## Cuándo el asistente deriva a una persona
 
@@ -52,8 +42,6 @@ Si no tiene la información, lo dice y da el contacto del área correspondiente.
 
 No compartas DPI, números de tarjeta, contraseñas ni datos bancarios en el chat. Si lo haces, el asistente los enmascara antes de guardar la conversación.
 
-## Calidad de la respuesta
+## ¿Cómo sé que la respuesta es confiable?
 
-- Cada respuesta cita el documento y la sección.
-- Los botones de 👍 y 👎 ayudan a mejorar el asistente. Las preguntas sin respuesta se revisan para agregar o corregir documentos.
-- Si una respuesta parece desactualizada, confirma en el sitio oficial (https://www.uvg.edu.gt/) o con el contacto del área.
+Cada respuesta cita la fuente oficial de donde salió. Si algo parece desactualizado, confírmalo en https://www.uvg.edu.gt/ o con la oficina correspondiente.

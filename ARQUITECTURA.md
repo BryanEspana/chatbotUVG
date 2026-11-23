@@ -6,6 +6,13 @@
 > - **Modelo `openai/gpt-oss-120b`** vía OpenRouter, con su razonamiento normal (ver `investigacion_modelos_uvg.md`).
 > - **RAG**, sin fine-tuning.
 
+> **Actualización del 23 de noviembre de 2026.** Algunas decisiones de este documento cambiaron con la implementación:
+> - **Hosting:** la UVG decide dónde publicar. Las menciones a Railway son la opción que se evaluó al inicio, no un requisito: el sistema corre en cualquier plataforma con Python y PostgreSQL con pgvector.
+> - **Respuestas sin información:** la IA redacta siempre la respuesta para que suene humana. Bajo el umbral ya no se contesta con un texto fijo: el modelo recibe cero fragmentos, así que conversa y dice que no tiene el dato, sin poder dar datos de la UVG. Los saludos se saltan la búsqueda.
+> - **Umbral:** 0.35, ajustado con los documentos reales.
+> - **Interfaz:** la página de chat completa está en `backend/web/` y se sirve en `/`; la versión incrustable sigue pendiente.
+> - **Conocimiento:** `conocimiento/` tiene los documentos reales de uvg.edu.gt; el corpus ficticio del examen está en `examen/conocimiento_ficticio_fase1/`.
+
 ---
 
 ## 1. Objetivos y restricciones

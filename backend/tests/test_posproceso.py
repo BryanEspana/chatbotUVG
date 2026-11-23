@@ -87,3 +87,11 @@ def test_armar_mensajes():
     assert [x["role"] for x in m] == ["system", "user", "assistant", "user"]
     assert m[-1]["content"].startswith("FRAGMENTOS:\n[1] (Admisiones — Prueba de admisión)\nSe puede repetir")
     assert m[-1]["content"].endswith("PREGUNTA:\n¿y la puedo repetir?")
+
+
+def test_sin_marcas_limpia_la_consulta_al_buscador():
+    from app.privacidad import enmascarar, sin_marcas
+
+    m = enmascarar("Mi DPI es 1234 56789 0101 y mi correo ana@gmail.com, ¿cuánto cuesta el examen?")
+    assert sin_marcas(m) == "Mi DPI es y mi correo, ¿cuánto cuesta el examen?"
+    assert sin_marcas("¿Cuánto cuesta el examen?") == "¿Cuánto cuesta el examen?"

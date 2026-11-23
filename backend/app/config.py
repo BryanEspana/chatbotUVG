@@ -33,9 +33,10 @@ class Settings(BaseSettings):
     # --- conocimiento y búsqueda ---
     carpeta_conocimiento: Path = RAIZ / "conocimiento"
     top_k: int = 4
-    # Similitud coseno mínima del mejor fragmento para llamar al LLM. Se calibra con
-    # `python -m app.evaluar_busqueda` (fase 1) y con el examen (fase 2).
-    umbral_similitud: float = 0.40
+    # Similitud coseno mínima del mejor fragmento para pasarle fragmentos al LLM. Bajo este valor el
+    # modelo responde sin datos de la UVG. 0.35 se ajustó con los documentos reales: las preguntas
+    # válidas quedan sobre 0.39 y las ajenas a la UVG entre 0.20 y 0.23.
+    umbral_similitud: float = 0.35
     # Tamaño de los fragmentos, en tokens aproximados (1 token ≈ 4 caracteres en español).
     fragmento_tokens: int = 400
     fragmento_traslape: int = 60

@@ -9,7 +9,11 @@ verificado: 2026-11-17
 
 Fuentes: https://www.uvg.edu.gt/admisiones/aplica/ y https://www.uvg.edu.gt/admisiones/preguntas-frecuentes/
 
-## Cómo aplicar a una licenciatura
+## Resumen: cómo entrar a la UVG y cuánto cuesta el examen de admisión
+
+Para entrar a la UVG a una licenciatura (primer ingreso) hay que crear un usuario en el portal https://admisiones.uvg.edu.gt/, subir fotografía, certificado de cursos y DPI o partida de nacimiento, pagar en línea el derecho de admisión de Q295, presentar la Prueba de Aptitud Académica (PAA), esperar los resultados entre 2 y 3 semanas y, si la persona es admitida, preinscribirse en el mismo portal. El examen de admisión cuesta Q295. Hay pruebas todos los meses. Los pasos completos están en la sección siguiente. Los posgrados, la Facultad de Educación y los traslados tienen procesos distintos.
+
+## Cómo entrar a la UVG: pasos para aplicar a una licenciatura (primer ingreso)
 
 1. **Portal en línea** (https://admisiones.uvg.edu.gt/): crear usuario, verificar el correo electrónico, abrir el enlace enviado y completar el formulario.
 2. **Documentos:**
@@ -51,7 +55,7 @@ Aplicar desde el interior del país o desde el extranjero es un proceso completa
 - **Inducción:** para primer ingreso es la primera semana de enero. Las clases del primer ciclo empiezan después. La página indica que es importante asistir.
 - **Asignación de clases:** en primer ingreso, la asignación del primer semestre es automática. Desde el segundo ciclo se hace en el portal académico.
 
-## Ciclos, horarios y modalidad
+## Horarios de clases: días, sábados y fines de semana, ciclos y modalidad
 
 - **Ciclos:** el primero va de enero a junio y el segundo de julio a noviembre.
 - **Vacaciones:** la página dice que son entre ciclos, en junio y diciembre. Confirmar las fechas exactas en el calendario académico.
@@ -67,7 +71,7 @@ Aplicar desde el interior del país o desde el extranjero es un proceso completa
 - El tarifario 2026 está en un PDF enlazado desde la página de carreras de admisión.
 - El pago de inscripción académica no es reembolsable.
 
-## Facultad de Educación (profesorados y licenciaturas)
+## Facultad de Educación: cómo aplicar a profesorados y licenciaturas en Educación
 
 1. Crear usuario en el portal y subir fotografía, certificado oficial de cursos y DPI, partida o pasaporte.
 2. Cita en línea con el director de carrera. El especialista de Admisiones la programa.
@@ -75,14 +79,17 @@ Aplicar desde el interior del país o desde el extranjero es un proceso completa
 
 El texto de este proceso no menciona examen de admisión.
 
-## UVG Masters (posgrados)
+## Posgrados (UVG Masters): cómo aplicar a una maestría
+
+Este proceso es solo para maestrías y posgrados, no para licenciaturas de primer ingreso.
+
 
 1. Enviar la solicitud en el portal de admisiones.
 2. Adjuntar DPI, título universitario (o cierre de pénsum de una universidad certificada) y currículum vitae.
 3. El director o directora del programa revisa la solicitud y después se coordina una cita.
 4. Iniciar la inscripción desde el portal de admisiones.
 
-## Traslado desde otra universidad
+## Traslado desde otra universidad: cómo cambiarse a la UVG
 
 1. Reunir: certificado de notas de la universidad actual, carta de buena conducta y programas académicos de los cursos que se quieren convalidar.
 2. Entrevista en línea con el director de carrera, programada a través de Admisiones.
