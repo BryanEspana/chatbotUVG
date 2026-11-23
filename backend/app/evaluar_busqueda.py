@@ -5,7 +5,9 @@ Evalúa la recuperación con las 30 preguntas del examen (examen/preguntas.json)
 
 Requiere los documentos del examen, archivados en examen/conocimiento_ficticio_fase1/ desde que
 conocimiento/ tiene la información real de la UVG. Usar una base aparte y apuntar ahí:
-    CARPETA_CONOCIMIENTO=../examen/conocimiento_ficticio_fase1 DATABASE_URL=... python -m app.ingesta Mide:
+    CARPETA_CONOCIMIENTO=../examen/conocimiento_ficticio_fase1 DATABASE_URL=... python -m app.ingesta
+
+Mide:
 
 - Acierto@k: en cuántas preguntas el fragmento esperado está entre los top_k que recibe el LLM.
 - MRR: qué tan arriba aparece (1 = siempre primero).
