@@ -1,0 +1,3 @@
+.env
+resultados/cache/
+__pycache__/

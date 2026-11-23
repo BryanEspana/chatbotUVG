@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="claro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jacko UVG · Maqueta</title>
+<style>
+/* Paleta UVG (estimada del sitio; confirmar con el manual de marca).
+   Sin grises: los neutros son verde muy oscuro y verde muy claro. */
+:root {
+  --verde: #3d8a4e;
+  --verde-claro: #6cc04a;
+  --verde-oscuro: #123b2d;
+  --amarillo: #f2c230;
+  --curva: cubic-bezier(.22, .9, .25, 1);   /* curva suave tipo Apple */
+  --fuente: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+html[data-tema="claro"] {
+  --fondo: #ffffff;
+  --tinta: #0f2e22;
+  --tinta-2: rgba(15, 46, 34, .62);
+  --linea: rgba(15, 46, 34, .12);
+  --menta: #eef7e9;
+  --lateral: #f6fbf2;
+  --resalte: var(--verde-oscuro);
+}
+html[data-tema="oscuro"] {
+  --fondo: #0b1f17;
+  --tinta: #eef7ee;
+  --tinta-2: rgba(238, 247, 238, .66);
+  --linea: rgba(238, 247, 238, .13);
+  --menta: #132b20;
+  --lateral: #0f261c;
+  --resalte: var(--verde-claro);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { font: 16px/1.6 var(--fuente); color: var(--tinta); background: var(--fondo); overflow: hidden; -webkit-font-smoothing: antialiased; }
+button, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+:focus-visible { outline: 2px solid var(--verde-claro); outline-offset: 3px; border-radius: 6px; }
+
+/* ---------- Estructura ---------- */
+.app { height: 100%; display: grid; grid-template-columns: 240px minmax(0, 1fr) 360px; transition: grid-template-columns .5s var(--curva); }
+.app.sin-fuentes { grid-template-columns: 240px minmax(0, 1fr) 0; }
+.app { overflow: hidden; }
+.app.sin-fuentes .fuentes { display: none; }
+
+.lateral { background: var(--lateral); padding: 22px 16px; display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--linea); }
+.marca { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -.01em; padding: 0 8px 26px; }
+.marca svg { width: 28px; height: 28px; color: var(--verde-claro); }
+.nuevo { display: flex; align-items: center; gap: 10px; padding: 9px 12px 9px 10px; border-radius: 999px; font-weight: 500; color: var(--resalte); text-align: left; white-space: nowrap; transition: background .3s var(--curva); }
+.nuevo:hover { background: var(--menta); }
+.nuevo i { width: 26px; height: 26px; border-radius: 50%; background: var(--verde-claro); color: var(--verde-oscuro); display: grid; place-items: center; font-style: normal; font-size: 18px; line-height: 1; }
+.etiqueta { margin: 26px 10px 10px; font-size: 12px; font-weight: 600; color: var(--tinta-2); letter-spacing: .02em; }
+.historial { list-style: none; margin: 0; padding: 0; overflow: auto; flex: 1; }
+.historial li { padding: 8px 10px; border-radius: 999px; color: var(--tinta-2); cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: background .3s var(--curva), color .3s; }
+.historial li:hover { background: var(--menta); color: var(--tinta); }
+.historial li.activo { color: var(--tinta); font-weight: 500; }
+.pie-lateral { font-size: 12px; color: var(--tinta-2); padding: 14px 10px 0; }
+
+.principal { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.barra { display: flex; align-items: center; gap: 8px; padding: 16px 26px; }
+.barra h1 { font-size: 15px; font-weight: 600; margin: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -.01em; }
+.boton-icono { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; color: var(--tinta); transition: background .3s var(--curva); }
+.boton-icono:hover { background: var(--menta); }
+.boton-icono svg { width: 18px; height: 18px; }
+.menu { display: none; }
+.marca-uvg { font-size: 12px; color: var(--tinta-2); padding-right: 4px; white-space: nowrap; }
+.marca-uvg b { color: var(--resalte); font-weight: 600; }
+
+.hilo { flex: 1; overflow-y: auto; padding: 8px clamp(18px, 6vw, 64px) 16px; }
+.hilo-interno { max-width: 720px; margin: 0 auto; }
+
+/* ---------- Inicio: lista tipográfica, sin tarjetas ---------- */
+.inicio { padding: clamp(28px, 9vh, 90px) 0 0; }
+.inicio .saludo { font-size: clamp(34px, 5.2vw, 56px); font-weight: 600; letter-spacing: -.035em; line-height: 1.05; margin: 0 0 10px; }
+.inicio .saludo span { color: var(--verde); }
+html[data-tema="oscuro"] .inicio .saludo span { color: var(--verde-claro); }
+.inicio .sub { font-size: 18px; color: var(--tinta-2); margin: 0 0 40px; max-width: 520px; }
+.temas { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--linea); }
+.tema {
+  position: relative; width: 100%; display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 8px;
+  padding: 18px 4px; text-align: left; border-bottom: 1px solid var(--linea); overflow: hidden;
+  opacity: 0; animation: subir .7s var(--curva) forwards; animation-delay: var(--d);
+}
+.tema::before { /* resalte que se desliza al pasar el cursor */
+  content: ""; position: absolute; inset: 0; background: var(--menta); transform: scaleX(0); transform-origin: left;
+  transition: transform .6s var(--curva); z-index: -1; border-radius: 14px;
+}
+.tema:hover::before, .tema:focus-visible::before { transform: scaleX(1); }
+.tema .n { font: 500 13px var(--mono); color: var(--tinta-2); }
+.tema .t { font-size: 22px; font-weight: 600; letter-spacing: -.02em; display: block; line-height: 1.2; }
+.tema .d { font-size: 14px; color: var(--tinta-2); }
+.tema .flecha { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--linea); display: grid; place-items: center; transition: transform .5s var(--curva), background .3s, border-color .3s; }
+.tema .flecha svg { width: 16px; height: 16px; }
+.tema:hover .flecha { transform: rotate(-45deg); background: var(--verde-claro); border-color: var(--verde-claro); color: var(--verde-oscuro); }
+@keyframes subir { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Mensajes ---------- */
+.mensaje { margin: 0 0 30px; animation: subir .6s var(--curva) both; }
+.mensaje.usuario { display: flex; justify-content: flex-end; }
+.mensaje.usuario .burbuja { max-width: 78%; padding: 11px 18px; border-radius: 22px 22px 6px 22px; background: var(--verde-oscuro); color: #eef7ee; font-size: 16px; }
+html[data-tema="oscuro"] .mensaje.usuario .burbuja { background: var(--verde); color: #fff; }
+.mensaje.asistente .texto { white-space: pre-wrap; font-size: 17px; line-height: 1.65; }
+.cita {
+  display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; margin: 0 3px; border-radius: 999px;
+  font: 600 11px/1 var(--mono); vertical-align: 2px; background: var(--verde-claro); color: var(--verde-oscuro);
+  transition: transform .4s var(--curva), background .3s;
+}
+.cita:hover { transform: scale(1.12); }
+.cita.activa { background: var(--amarillo); color: #2a2200; }
+.cursor { display: inline-block; width: 2px; height: 1.05em; background: var(--verde-claro); vertical-align: -3px; margin-left: 2px; animation: parpadeo 1s steps(2) infinite; }
+@keyframes parpadeo { to { visibility: hidden; } }
+
+.pie-respuesta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 14px; font-size: 14px; color: var(--tinta-2); }
+.pie-respuesta .ver { color: var(--resalte); font-weight: 500; display: inline-flex; gap: 6px; align-items: center; transition: gap .4s var(--curva); }
+.pie-respuesta .ver:hover { gap: 10px; }
+.pie-respuesta .ver svg { width: 14px; height: 14px; }
+.valorar { margin-left: auto; display: flex; gap: 2px; }
+.valorar button { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; color: var(--tinta-2); transition: background .3s, color .3s; }
+.valorar button:hover { background: var(--menta); color: var(--tinta); }
+.valorar svg { width: 16px; height: 16px; }
+
+/* ---------- Visualización: pasos de admisión (línea de progreso) ---------- */
+.viz { margin-top: 22px; }
+.viz-titulo { font-size: 13px; font-weight: 600; color: var(--tinta-2); margin: 0 0 14px; }
+.pasos-viz { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.pasos-viz::before, .pasos-viz .relleno { content: ""; position: absolute; top: 13px; left: 12px; right: 12px; height: 2px; border-radius: 2px; }
+.pasos-viz::before { background: var(--linea); }
+.pasos-viz .relleno { right: auto; width: 0; background: var(--verde-claro); transition: width 1.4s var(--curva) .2s; }
+.pasos-viz.listo .relleno { width: calc(100% - 24px); }
+.paso { position: relative; text-align: left; }
+.paso .punto { width: 26px; height: 26px; border-radius: 50%; background: var(--fondo); border: 2px solid var(--linea); display: grid; place-items: center; font: 600 11px var(--mono); color: var(--tinta-2); transition: all .6s var(--curva); }
+.pasos-viz.listo .paso .punto { border-color: var(--verde-claro); background: var(--verde-claro); color: var(--verde-oscuro); }
+.pasos-viz .paso:nth-child(1) .punto { transition-delay: .25s; }
+.pasos-viz .paso:nth-child(2) .punto { transition-delay: .6s; }
+.pasos-viz .paso:nth-child(3) .punto { transition-delay: .95s; }
+.pasos-viz .paso:nth-child(4) .punto { transition-delay: 1.3s; }
+.paso b { display: block; font-size: 14px; font-weight: 600; margin-top: 12px; }
+.paso span { font-size: 13px; color: var(--tinta-2); }
+
+/* ---------- Visualización: horario de la biblioteca (barras de tiempo) ---------- */
+.horas { display: grid; gap: 9px; }
+.hora-fila { display: grid; grid-template-columns: 124px 1fr; gap: 12px; align-items: center; font-size: 14px; }
+.hora-fila .dia { color: var(--tinta-2); white-space: nowrap; }
+.hora-fila .pista { position: relative; height: 10px; border-radius: 999px; background: var(--menta); overflow: hidden; }
+.hora-fila .barra { position: absolute; top: 0; bottom: 0; border-radius: 999px; background: var(--verde); width: 0; transition: width 1.1s var(--curva); }
+.hora-fila.cerrado .barra { display: none; }
+.hora-fila.cerrado .dia::after { content: " · cerrado"; color: var(--tinta-2); opacity: .8; }
+.escala { position: relative; height: 16px; margin: 10px 0 0 136px; font: 11px var(--mono); color: var(--tinta-2); }
+.escala span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+html[data-tema="oscuro"] .hora-fila .barra { background: var(--verde-claro); }
+
+/* ---------- Contacto: sin caja, dos botones ---------- */
+.contacto { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--linea); }
+.contacto p { margin: 0 0 12px; color: var(--tinta-2); font-size: 15px; }
+.contacto p b { color: var(--tinta); font-weight: 600; }
+.contacto .botones { display: flex; gap: 10px; flex-wrap: wrap; }
+.pildora { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px; font-weight: 500; font-size: 15px; text-decoration: none; transition: transform .4s var(--curva), background .3s; }
+.pildora:hover { transform: translateY(-2px); }
+.pildora.primaria { background: var(--verde-oscuro); color: #eef7ee; }
+html[data-tema="oscuro"] .pildora.primaria { background: var(--verde-claro); color: var(--verde-oscuro); }
+.pildora.secundaria { border: 1px solid var(--linea); color: var(--tinta); }
+.pildora.secundaria:hover { background: var(--menta); }
+.pildora svg { width: 16px; height: 16px; }
+
+/* ---------- Entrada ---------- */
+.entrada { padding: 10px clamp(18px, 6vw, 64px) 18px; }
+.caja {
+  max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 8px;
+  padding: 6px 6px 6px 22px; border-radius: 999px; border: 1px solid var(--linea); transition: border-color .3s, box-shadow .4s var(--curva);
+}
+.caja:focus-within { border-color: var(--verde-claro); box-shadow: 0 0 0 4px rgba(108, 192, 74, .18); }
+.caja textarea { flex: 1; resize: none; border: 0; background: transparent; outline: none; padding: 9px 0; max-height: 160px; min-height: 24px; font-size: 16px; }
+.caja textarea::placeholder { color: var(--tinta-2); }
+.enviar { width: 42px; height: 42px; border-radius: 50%; background: var(--verde-oscuro); color: #eef7ee; display: grid; place-items: center; flex: none; transition: transform .4s var(--curva), opacity .3s; }
+html[data-tema="oscuro"] .enviar { background: var(--verde-claro); color: var(--verde-oscuro); }
+.enviar:hover { transform: scale(1.06); }
+.enviar:disabled { opacity: .25; transform: none; cursor: default; }
+.enviar svg { width: 18px; height: 18px; }
+.aviso { text-align: center; font-size: 12px; color: var(--tinta-2); margin: 12px 0 0; }
+
+/* ---------- Fuentes: línea de tiempo, sin tarjetas ---------- */
+.fuentes { position: relative; padding: 26px 26px 26px 22px; overflow-y: auto; min-height: 0; border-left: 1px solid var(--linea); background: var(--fondo); }
+.fuentes h2 { font-size: 15px; font-weight: 600; margin: 0 0 20px; letter-spacing: -.01em; }
+.lista-fuentes { position: relative; list-style: none; margin: 0; padding: 0; }
+.lista-fuentes::before { content: ""; position: absolute; left: 13px; top: 14px; bottom: 14px; width: 1px; background: var(--linea); }
+.fuente { position: relative; padding: 0 0 26px 46px; opacity: 0; transform: translateX(14px); transition: opacity .6s var(--curva), transform .6s var(--curva); }
+.fuentes.abierta .fuente { opacity: 1; transform: none; }
+.fuentes.abierta .fuente:nth-child(2) { transition-delay: .08s; }
+.fuentes.abierta .fuente:nth-child(3) { transition-delay: .16s; }
+.fuente .nodo { position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 600 12px var(--mono); background: var(--fondo); border: 1px solid var(--linea); color: var(--tinta-2); transition: all .5s var(--curva); }
+.fuente.activa .nodo { background: var(--verde-claro); border-color: var(--verde-claro); color: var(--verde-oscuro); transform: scale(1.08); }
+.fuente .seccion { font-size: 16px; font-weight: 600; letter-spacing: -.01em; margin: 2px 0 2px; }
+.fuente .doc { font-size: 13px; color: var(--tinta-2); margin-bottom: 8px; }
+.fuente p { font-size: 14.5px; color: var(--tinta-2); margin: 0 0 10px; }
+.fuente a { font-size: 14px; color: var(--resalte); font-weight: 500; text-decoration: none; }
+.fuente a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.cerrar-fuentes { display: none; position: absolute; top: 14px; right: 14px; }
+.vacio-fuentes { color: var(--tinta-2); font-size: 15px; }
+.error { color: var(--tinta); }
+.aviso-error { color: var(--tinta-2); }
+.lista-fuentes li.vacio-fuentes { padding: 0; }
+.velo { display: none; }
+
+/* ---------- Móvil ---------- */
+@media (max-width: 900px) {
+  .app, .app.sin-fuentes { grid-template-columns: 1fr; }
+  .lateral { position: fixed; top: 0; bottom: 0; left: 0; width: min(300px, 84vw); z-index: 20; transform: translateX(-104%); transition: transform .5s var(--curva); padding-top: calc(22px + env(safe-area-inset-top)); }
+  .lateral.abierta { transform: none; }
+  .menu { display: grid; }
+  .velo.visible { display: block; position: fixed; inset: 0; background: rgba(8, 24, 17, .35); z-index: 15; animation: aparecer .4s ease; }
+  @keyframes aparecer { from { opacity: 0; } }
+  .fuentes {
+    position: fixed; left: 0; right: 0; bottom: 0; max-height: 70vh; z-index: 25; border: 0; background: var(--fondo);
+    border-radius: 26px 26px 0 0; transform: translateY(104%); transition: transform .6s var(--curva); box-shadow: 0 -10px 40px rgba(0, 0, 0, .12);
+    padding-bottom: calc(26px + env(safe-area-inset-bottom));
+  }
+  .fuentes::before { content: ""; display: block; width: 40px; height: 5px; border-radius: 3px; background: var(--linea); margin: -10px auto 18px; }
+  .fuentes.abierta { transform: none; }
+  .app.sin-fuentes .fuentes { display: block; }
+  .cerrar-fuentes { display: grid; }
+  .marca-uvg { display: none; }
+  .entrada { padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+  .mensaje.usuario .burbuja { max-width: 88%; }
+  .pasos-viz { grid-template-columns: repeat(2, 1fr); row-gap: 22px; }
+  .pasos-viz::before, .pasos-viz .relleno { display: none; }
+  .escala { margin-left: 124px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .tema, .mensaje { opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="marca" viewBox="0 0 48 48">
+    <path d="M24 6c-9.9 0-18 7.1-18 16 0 4.2 1.8 8 4.8 10.9L8 42l9.4-4.1c2.2.7 4.6 1.1 6.6 1.1 9.9 0 18-7.1 18-16S33.9 6 24 6z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/>
+    <circle cx="16" cy="22" r="2.6" fill="currentColor"/><circle cx="24" cy="22" r="2.6" fill="currentColor"/><circle cx="32" cy="22" r="2.6" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-enviar" viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-flecha" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-tema" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-fuentes" viewBox="0 0 24 24"><path d="M5 6h14M5 12h9M5 18h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-arriba" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-abajo" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 7.5l7.5 5.5 7.5-5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-tel" viewBox="0 0 24 24"><path d="M6.6 4.5h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2 2A15 15 0 0 1 4.5 6.5a2 2 0 0 1 2.1-2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-externo" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="app" id="app">
+  <aside class="lateral" id="lateral">
+    <div class="marca"><svg><use href="#marca"/></svg><span id="nombre-lateral">Jacko UVG</span></div>
+    <button class="nuevo" id="nuevo"><i>+</i>Nueva conversación</button>
+    <div class="etiqueta" id="etiqueta-recientes" hidden>Recientes</div>
+    <ul class="historial" id="historial"></ul>
+    <div class="pie-lateral">Asistente de la Universidad del Valle de Guatemala. Las conversaciones se guardan 90 días sin datos personales.</div>
+  </aside>
+
+  <main class="principal">
+    <div class="barra">
+      <button class="boton-icono menu" id="btn-menu" aria-label="Abrir menú"><svg><use href="#i-menu"/></svg></button>
+      <h1 id="titulo">Nueva conversación</h1>
+      <span class="marca-uvg">Universidad del Valle de Guatemala · <b>Admisiones y estudiantes</b></span>
+      <button class="boton-icono" id="btn-fuentes" aria-label="Ver fuentes" title="Fuentes"><svg><use href="#i-fuentes"/></svg></button>
+      <button class="boton-icono" id="btn-tema" aria-label="Cambiar tema" title="Tema claro u oscuro"><svg><use href="#i-tema"/></svg></button>
+    </div>
+
+    <section class="hilo" id="hilo"><div class="hilo-interno" id="contenido"></div></section>
+
+    <form class="entrada" id="form">
+      <div class="caja">
+        <textarea id="pregunta" rows="1" maxlength="500" placeholder="Escribe tu pregunta" aria-label="Escribe tu pregunta"></textarea>
+        <button class="enviar" id="enviar" type="submit" aria-label="Enviar" disabled><svg><use href="#i-enviar"/></svg></button>
+      </div>
+      <p class="aviso">Respondo con documentos de la UVG y verifico los trámites importantes con la oficina. Las conversaciones se guardan 90 días; no escribas datos personales como DPI, carné o contraseñas.</p>
+    </form>
+  </main>
+
+  <aside class="fuentes" id="fuentes" aria-label="Fuentes de la respuesta">
+    <button class="boton-icono cerrar-fuentes" id="cerrar-fuentes" aria-label="Cerrar fuentes"><svg><use href="#i-flecha" style="transform:rotate(90deg)"/></svg></button>
+    <h2>Fuentes</h2>
+    <ol class="lista-fuentes" id="lista-fuentes"><li class="vacio-fuentes">Las fuentes de cada respuesta aparecen aquí.</li></ol>
+  </aside>
+  <div class="velo" id="velo"></div>
+</div>
+
+<script>
+/* Nombre del asistente: cámbialo aquí y se actualiza en toda la página. */
+const NOMBRE = "Jacko UVG";
+
+/* Sugerencias de la pantalla de inicio (las respuestas vienen del backend real). */
+/* Solo temas con respuesta en los documentos oficiales de conocimiento/. */
+const TEMAS = [
+  { t: "Admisiones", d: "Pasos, costo y fechas de la prueba", p: "¿Cuáles son los pasos para entrar a la UVG?" },
+  { t: "Becas", d: "Tipos de beca, crédito y requisitos", p: "¿Qué becas ofrece la UVG?" },
+  { t: "Carreras", d: "Ayuda para decidir qué estudiar", p: "No sé qué carrera elegir, ¿me ayudas?" },
+  { t: "Biblioteca", d: "Ubicación, servicios y catálogo", p: "¿Qué servicios tiene la biblioteca?" },
+  { t: "Plataformas", d: "Portal, Canvas y correo", p: "¿Dónde entro a Canvas?" },
+];
+
+const API = "/api";
+const $ = (id) => document.getElementById(id);
+const hilo = $("hilo"), contenido = $("contenido"), pregunta = $("pregunta"), enviar = $("enviar");
+const app = $("app"), lateral = $("lateral"), fuentesPanel = $("fuentes"), velo = $("velo");
+
+let conversacionId = sessionStorage.getItem("conversacion") || null;
+let turnos = [];          // historial local: [{rol, texto}], se manda al backend (últimos 6)
+let enCurso = false;
+let fuentesActuales = [];
+
+const ICONO = (id) => `<svg width="16" height="16" aria-hidden="true"><use href="#${id}"/></svg>`;
+
+function crear(tag, clase, texto) {
+  const el = document.createElement(tag);
+  if (clase) el.className = clase;
+  if (texto !== undefined) el.textContent = texto;
+  return el;
+}
+
+/* ---------- Inicio ---------- */
+function pantallaInicio() {
+  contenido.innerHTML = "";
+  const inicio = crear("div", "inicio");
+  inicio.innerHTML = `<p class="saludo">¿En qué te<br><span>ayudo hoy?</span></p><p class="sub">Pregunta sobre admisiones, trámites, biblioteca, equipo o carreras. Siempre te digo de qué documento sale la respuesta.</p>`;
+  const lista = crear("ul", "temas");
+  TEMAS.forEach((t, i) => {
+    const li = crear("li");
+    const b = crear("button", "tema");
+    b.type = "button";
+    b.style.setProperty("--d", `${0.12 + i * 0.09}s`);
+    b.innerHTML = `<span class="n">0${i + 1}</span><span><span class="t">${t.t}</span><span class="d">${t.d}</span></span><span class="flecha">${ICONO("i-flecha")}</span>`;
+    b.addEventListener("click", () => preguntar(t.p));
+    li.appendChild(b);
+    lista.appendChild(li);
+  });
+  inicio.appendChild(lista);
+  contenido.appendChild(inicio);
+}
+
+/* ---------- Mensajes ---------- */
+function burbujaUsuario(texto) {
+  const m = crear("div", "mensaje usuario");
+  m.appendChild(crear("div", "burbuja", texto));
+  contenido.appendChild(m);
+}
+
+function botonCita(n) {
+  const b = crear("button", "cita", String(n));
+  b.type = "button";
+  b.setAttribute("aria-label", `Ver fuente ${n}`);
+  b.addEventListener("click", () => mostrarFuentes(fuentesActuales, n));
+  return b;
+}
+
+/* Convierte [n] en botones de cita. Solo las citas que existen entre las fuentes; las demás se quitan. */
+function renderTexto(el, texto, cantidadFuentes) {
+  el.textContent = "";
+  texto.split(/(\[\d+\])/).forEach((p) => {
+    const m = p.match(/^\[(\d+)\]$/);
+    if (m) {
+      const n = Number(m[1]);
+      if (n >= 1 && n <= cantidadFuentes) el.appendChild(botonCita(n));
+    } else if (p) {
+      el.appendChild(document.createTextNode(p));
+    }
+  });
+}
+
+function pieRespuesta(m, mensajeId, cantidad) {
+  const pie = crear("div", "pie-respuesta");
+  if (cantidad) {
+    const ver = crear("button", "ver");
+    ver.type = "button";
+    ver.innerHTML = `Ver ${cantidad === 1 ? "la fuente" : `las ${cantidad} fuentes`} ${ICONO("i-flecha")}`;
+    ver.addEventListener("click", () => mostrarFuentes(fuentesActuales, 1));
+    pie.appendChild(ver);
+  }
+  const val = crear("div", "valorar");
+  const arriba = crear("button"), abajo = crear("button");
+  arriba.type = abajo.type = "button";
+  arriba.setAttribute("aria-label", "Respuesta útil");
+  abajo.setAttribute("aria-label", "Respuesta no útil");
+  arriba.innerHTML = ICONO("i-arriba");
+  abajo.innerHTML = ICONO("i-abajo");
+  const valorar = (v, boton) => async () => {
+    if (!mensajeId || !conversacionId) return;
+    val.querySelectorAll("button").forEach((x) => (x.style.color = ""));
+    boton.style.color = "var(--verde-claro)";
+    await fetch(`${API}/feedback`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ conversacion_id: conversacionId, mensaje_id: mensajeId, valor: v }),
+    }).catch(() => {});
+  };
+  arriba.addEventListener("click", valorar(1, arriba));
+  abajo.addEventListener("click", valorar(-1, abajo));
+  val.append(arriba, abajo);
+  pie.appendChild(val);
+  m.appendChild(pie);
+}
+
+function tarjetaContacto(m, c) {
+  const bloque = crear("div", "contacto");
+  const partes = [c.telefono, c.horario].filter(Boolean).join(" · ");
+  bloque.innerHTML = `<p>¿Prefieres hablar con alguien? <b></b>${partes ? " · " + partes : ""}</p>`;
+  bloque.querySelector("b").textContent = c.nombre;
+  const botones = crear("div", "botones");
+  if (c.correo) {
+    const mail = crear("a", "pildora primaria"); mail.href = `mailto:${c.correo}`; mail.innerHTML = `${ICONO("i-mail")} Escribir`;
+    botones.appendChild(mail);
+  }
+  if (c.telefono) {
+    const tel = crear("a", "pildora secundaria"); tel.href = `tel:${c.telefono.replace(/[^\d+]/g, "")}`; tel.innerHTML = `${ICONO("i-tel")} Llamar`;
+    botones.appendChild(tel);
+  }
+  bloque.appendChild(botones);
+  m.appendChild(bloque);
+}
+
+/* ---------- Fuentes: línea de tiempo ---------- */
+function mostrarFuentes(fuentes, resaltar) {
+  if (!fuentes || !fuentes.length) return;
+  const lista = $("lista-fuentes");
+  lista.innerHTML = "";
+  fuentes.forEach((f) => {
+    const li = crear("li", "fuente");
+    li.dataset.n = f.n;
+    if (f.n === resaltar) li.classList.add("activa");
+    li.appendChild(crear("span", "nodo", String(f.n)));
+    li.appendChild(crear("p", "seccion", f.seccion));
+    li.appendChild(crear("div", "doc", `${f.titulo} · ${f.documento}`));
+    li.appendChild(crear("p", "", f.texto));
+    if (f.url) {
+      const a = crear("a", "", "Abrir documento oficial");
+      a.href = f.url; a.target = "_blank"; a.rel = "noopener";
+      li.appendChild(a);
+    }
+    lista.appendChild(li);
+  });
+  app.classList.remove("sin-fuentes");
+  requestAnimationFrame(() => fuentesPanel.classList.add("abierta"));
+  if (window.innerWidth <= 900) velo.classList.add("visible");
+  document.querySelectorAll(".cita").forEach((c) => c.classList.toggle("activa", c.textContent === String(resaltar)));
+  const destacada = lista.querySelector(`[data-n="${resaltar}"]`);
+  if (destacada) destacada.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+function cerrarFuentes() {
+  fuentesPanel.classList.remove("abierta");
+  velo.classList.remove("visible");
+  app.classList.add("sin-fuentes"); // libera la columna para que la conversación ocupe el espacio
+}
+
+/* ---------- Streaming desde /api/chat (SSE sobre POST) ---------- */
+async function pedirRespuesta(mensaje, historial, alEvento) {
+  const r = await fetch(`${API}/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ mensaje, conversacion_id: conversacionId, historial }),
+  });
+  if (r.status === 403) throw new Error("Este asistente no está disponible desde esta página.");
+  if (!r.ok || !r.body) throw new Error("No pude conectar con el asistente. Intenta de nuevo.");
+  const lector = r.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  for (;;) {
+    const { value, done } = await lector.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    let fin;
+    while ((fin = buffer.indexOf("\n\n")) !== -1) {
+      const bloque = buffer.slice(0, fin);
+      buffer = buffer.slice(fin + 2);
+      let evento = "message", datos = "";
+      bloque.split("\n").forEach((linea) => {
+        if (linea.startsWith("event:")) evento = linea.slice(6).trim();
+        else if (linea.startsWith("data:")) datos += linea.slice(5).trim();
+      });
+      if (datos) alEvento(evento, JSON.parse(datos));
+    }
+  }
+}
+
+/* ---------- Flujo de una pregunta ---------- */
+async function preguntar(texto) {
+  texto = texto.trim();
+  if (enCurso || !texto) return;
+  enCurso = true;
+  enviar.disabled = true;
+  if (contenido.querySelector(".inicio")) contenido.innerHTML = "";
+  $("titulo").textContent = texto.length > 44 ? texto.slice(0, 44) + "…" : texto;
+  agregarHistorial($("titulo").textContent);
+  burbujaUsuario(texto);
+  pregunta.value = "";
+  pregunta.style.height = "auto";
+
+  const mensaje = crear("div", "mensaje asistente");
+  const cuerpo = crear("div", "texto");
+  mensaje.appendChild(cuerpo);
+  contenido.appendChild(mensaje);
+  const cursor = crear("span", "cursor");
+  cuerpo.appendChild(cursor);
+
+  let acumulado = "", fuentes = [], mensajeId = null, fin = null, error = null;
+  const pintar = () => {
+    renderTexto(cuerpo, acumulado, fuentes.length);
+    cuerpo.appendChild(cursor);
+    hilo.scrollTop = hilo.scrollHeight;
+  };
+
+  try {
+    await pedirRespuesta(texto, turnos.slice(-6), (evento, d) => {
+      if (evento === "conversacion") {
+        conversacionId = d.id;
+        sessionStorage.setItem("conversacion", d.id);
+      } else if (evento === "fuentes") {
+        fuentes = d;
+        fuentesActuales = d;
+      } else if (evento === "delta") {
+        acumulado += d.t;
+        pintar();
+      } else if (evento === "fin") {
+        fin = d;
+        mensajeId = d.mensaje_id;
+      } else if (evento === "error") {
+        error = d;
+      }
+    });
+  } catch (e) {
+    error = { mensaje: e.message || "No pude responder ahora." };
+  }
+
+  cursor.remove();
+  if (error) {
+    cuerpo.textContent = error.mensaje;
+    cuerpo.classList.add("error");
+    if (error.codigo === "limite" && error.reintentar_en_s) {
+      cuerpo.appendChild(crear("span", "aviso-error", ` Intenta en ${error.reintentar_en_s} segundos.`));
+    }
+  } else {
+    if (fin && fin.reemplazo) acumulado = fin.reemplazo;
+    renderTexto(cuerpo, acumulado, fuentes.length);
+    turnos.push({ rol: "usuario", texto });
+    turnos.push({ rol: "asistente", texto: acumulado });
+    pieRespuesta(mensaje, mensajeId, fuentes.length);
+    if (fin && fin.contacto && (fin.estado === "sin_info" || fin.estado === "no_sabe")) tarjetaContacto(mensaje, fin.contacto);
+    if (fuentes.length && window.innerWidth > 900) mostrarFuentes(fuentes, 1);
+  }
+  hilo.scrollTop = hilo.scrollHeight;
+  enCurso = false;
+  enviar.disabled = !pregunta.value.trim();
+}
+
+function agregarHistorial(titulo) {
+  const h = $("historial");
+  const li = crear("li", "", titulo);
+  li.title = titulo;
+  h.prepend(li);
+  [...h.children].forEach((x, i) => x.classList.toggle("activo", i === 0));
+  $("etiqueta-recientes").hidden = false;
+}
+
+/* ---------- Eventos ---------- */
+pregunta.addEventListener("input", () => {
+  pregunta.style.height = "auto";
+  pregunta.style.height = Math.min(pregunta.scrollHeight, 160) + "px";
+  enviar.disabled = enCurso || !pregunta.value.trim();
+});
+pregunta.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("form").requestSubmit(); }
+});
+$("form").addEventListener("submit", (e) => { e.preventDefault(); preguntar(pregunta.value); });
+
+$("nuevo").addEventListener("click", () => {
+  conversacionId = null;
+  sessionStorage.removeItem("conversacion");
+  turnos = [];
+  fuentesActuales = [];
+  $("titulo").textContent = "Nueva conversación";
+  lateral.classList.remove("abierta"); velo.classList.remove("visible");
+  pantallaInicio();
+  app.classList.add("sin-fuentes");
+  fuentesPanel.classList.remove("abierta");
+  $("lista-fuentes").innerHTML = '<li class="vacio-fuentes">Las fuentes de cada respuesta aparecen aquí.</li>';
+});
+$("btn-menu").addEventListener("click", () => { lateral.classList.add("abierta"); velo.classList.add("visible"); });
+$("btn-fuentes").addEventListener("click", () => {
+  if (fuentesPanel.classList.contains("abierta")) return cerrarFuentes();
+  if (fuentesActuales.length) return mostrarFuentes(fuentesActuales, 1);
+  app.classList.remove("sin-fuentes");
+  requestAnimationFrame(() => fuentesPanel.classList.add("abierta"));
+});
+$("cerrar-fuentes").addEventListener("click", cerrarFuentes);
+velo.addEventListener("click", () => { lateral.classList.remove("abierta"); cerrarFuentes(); });
+$("btn-tema").addEventListener("click", () => {
+  const h = document.documentElement;
+  h.dataset.tema = h.dataset.tema === "claro" ? "oscuro" : "claro";
+});
+
+/* ---------- Arranque ---------- */
+$("nombre-lateral").textContent = NOMBRE;
+document.title = NOMBRE;
+pantallaInicio();
+app.classList.add("sin-fuentes");
+</script>
+</body>
+</html>

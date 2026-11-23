@@ -1,0 +1,42 @@
+# Contactos por área. Cada documento indica su área en el front matter (`area: biblioteca`).
+# Cuando el bot no tiene la respuesta, el backend agrega el contacto del área del fragmento
+# más relevante (o "general"). Si un contacto cambia, se cambia SOLO aquí.
+#
+# DATOS FICTICIOS (los del examen). Reemplazar por los contactos oficiales de la UVG.
+
+general:
+  nombre: Centro de Atención
+  correo: info@uvg.example
+  telefono: "(502) 0000-1000"
+
+admisiones:
+  nombre: Oficina de Admisiones
+  correo: admisiones@uvg.example
+  telefono: "(502) 0000-1010"
+  horario: "Lunes a viernes, 8:00 a 17:00"
+
+registro:
+  nombre: Registro
+  correo: registro@uvg.example
+  telefono: "(502) 0000-1020"
+
+ti:
+  nombre: Mesa de ayuda de TI
+  correo: soporte@uvg.example
+  telefono: "Extensión 2222"
+  horario: "Lunes a sábado, 7:00 a 19:00"
+
+biblioteca:
+  nombre: Biblioteca
+  correo: biblioteca@uvg.example
+  telefono: "Extensión 3030"
+
+prestamo:
+  nombre: Centro de Préstamo
+  correo: prestamo@uvg.example
+  telefono: "Extensión 4040"
+  horario: "Lunes a viernes, 7:00 a 20:00"
+
+orientacion:
+  nombre: Oficina de Orientación
+  correo: orientacion@uvg.example

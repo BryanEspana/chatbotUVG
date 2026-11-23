@@ -1,0 +1,29 @@
+# Contactos oficiales por área, tomados de uvg.edu.gt (admisiones, ayuda financiera, bibliotecas, CIT y servicios).
+# Cada documento indica su área en el front matter (`area: biblioteca`). Cuando el bot no tiene la respuesta,
+# el backend agrega el contacto del área del fragmento más relevante (o "general").
+# El backend usa solo los campos nombre, correo, telefono y horario. Si un contacto cambia, se cambia SOLO aquí.
+# Verificado el 17 de noviembre de 2026. Los correos de admisiones y ayuda financiera se leyeron de enlaces
+# protegidos de la página: confirmarlos con la UVG antes de la presentación.
+
+general:
+  nombre: Universidad del Valle de Guatemala
+  correo: info@uvg.edu.gt
+  telefono: "2507-1500 / 2364-0336 (PBX)"
+
+admisiones:
+  nombre: Unidad de Admisiones
+  correo: admisiones@uvg.edu.gt
+  telefono: "2368-8410 o 2507-1616. WhatsApp: 4969-0286, 4969-0294, 4968-8765"
+
+ayuda_financiera:
+  nombre: Ayudas Financieras
+  correo: ayudas.financieras@uvg.edu.gt
+  telefono: "2368-8410 o 2507-1616"
+
+biblioteca:
+  nombre: Biblioteca Amparo Codina de Campollo (Campus Central, Edificio CIT, nivel 3, oficina 327)
+  telefono: "2507-1500, ext. 21496"
+
+cit:
+  nombre: Centro de Innovación y Tecnología (CIT)
+  telefono: "2507-1500, ext. 21341"

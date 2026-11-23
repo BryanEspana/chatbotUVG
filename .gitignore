@@ -1,0 +1,21 @@
+# Secretos
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Frontend (fase 3)
+node_modules/
+frontend/dist/
+backend/static/
+# (backend/web/ sí se versiona: es la página del chat)
+
+# Examen
+examen/.env
+examen/resultados/cache/
+
+# macOS
+.DS_Store

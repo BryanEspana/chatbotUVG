@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="claro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel · Jacko UVG</title>
+<style>
+/* Mismo lenguaje visual que el chat: colores planos de la UVG, sin gris. */
+:root {
+  --verde: #3d8a4e;
+  --verde-claro: #6cc04a;
+  --verde-oscuro: #123b2d;
+  --amarillo: #f2c230;
+  --curva: cubic-bezier(.22, .9, .25, 1);
+  --fuente: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+html[data-tema="claro"] {
+  --fondo: #ffffff; --tinta: #0f2e22; --tinta-2: rgba(15, 46, 34, .62);
+  --linea: rgba(15, 46, 34, .12); --menta: #eef7e9; --lateral: #f6fbf2;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 15px/1.55 var(--fuente); color: var(--tinta); background: var(--fondo); }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--verde-claro); outline-offset: 3px; border-radius: 6px; }
+
+.encabezado { display: flex; align-items: center; gap: 14px; padding: 18px clamp(18px, 4vw, 40px); border-bottom: 1px solid var(--linea); }
+.encabezado h1 { font-size: 17px; font-weight: 600; margin: 0; letter-spacing: -.01em; flex: 1; }
+.encabezado svg { width: 26px; height: 26px; color: var(--verde-claro); }
+.btn-texto { background: none; border: 0; color: var(--verde); font-weight: 500; padding: 6px 2px; }
+.btn-texto:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.pantalla { max-width: 980px; margin: 0 auto; padding: 28px clamp(18px, 4vw, 40px) 60px; }
+.oculto { display: none !important; }
+
+/* Acceso */
+.acceso { max-width: 360px; margin: 12vh auto 0; }
+.acceso h2 { font-size: 26px; font-weight: 600; letter-spacing: -.02em; margin: 0 0 6px; }
+.acceso p { color: var(--tinta-2); margin: 0 0 22px; }
+.campo { width: 100%; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--linea); background: var(--fondo); outline: none; }
+.campo:focus { border-color: var(--verde-claro); box-shadow: 0 0 0 4px rgba(108, 192, 74, .18); }
+.boton { margin-top: 12px; width: 100%; padding: 12px; border-radius: 999px; border: 0; background: var(--verde-oscuro); color: #eef7ee; font-weight: 600; }
+.boton:hover { background: var(--verde); }
+.boton.secundario { width: auto; margin: 0; padding: 10px 18px; background: transparent; color: var(--verde-oscuro); border: 1px solid var(--verde); }
+.boton.peligro { width: auto; margin: 0; padding: 7px 14px; background: transparent; color: #9b2c1a; border: 1px solid #d8a79e; font-size: 14px; }
+.error { color: #9b2c1a; font-size: 14px; min-height: 22px; margin-top: 10px; }
+
+/* Pestañas */
+.pestanas { display: flex; gap: 6px; border-bottom: 1px solid var(--linea); margin-bottom: 26px; overflow-x: auto; }
+.pestanas button { background: none; border: 0; padding: 12px 14px; color: var(--tinta-2); border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+.pestanas button[aria-selected="true"] { color: var(--tinta); border-bottom-color: var(--verde-claro); font-weight: 600; }
+
+h2.titulo { font-size: 22px; font-weight: 600; letter-spacing: -.02em; margin: 0 0 6px; }
+.subtitulo { color: var(--tinta-2); margin: 0 0 22px; }
+
+/* Resumen: cifras grandes */
+.cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 28px 24px; }
+.cifra .n { font-size: clamp(32px, 4.4vw, 46px); font-weight: 600; letter-spacing: -.035em; line-height: 1; }
+.cifra .n small { font-size: 16px; color: var(--tinta-2); font-weight: 500; margin-left: 4px; }
+.cifra .l { color: var(--tinta-2); font-size: 14px; margin-top: 8px; }
+.cifra.resalte .n { color: var(--verde); }
+
+/* Filas (lista sin cajas) */
+.lista { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--linea); }
+.fila { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px 18px; align-items: center; padding: 16px 4px; border-bottom: 1px solid var(--linea); }
+.fila .principal-t { font-weight: 600; letter-spacing: -.01em; }
+.fila .detalle { font-size: 13.5px; color: var(--tinta-2); margin-top: 2px; }
+.fila .acciones { display: flex; gap: 8px; align-items: center; }
+.pista { grid-column: 1 / -1; height: 6px; border-radius: 999px; background: var(--menta); overflow: hidden; }
+.pista span { display: block; height: 100%; width: 0; background: var(--verde-claro); border-radius: 999px; transition: width 1s var(--curva); }
+.pill { font: 600 13px var(--mono); padding: 5px 11px; border-radius: 999px; background: var(--menta); color: var(--verde-oscuro); }
+.pill.alerta { background: var(--amarillo); color: #2a2200; }
+
+/* Subida */
+.subida { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 18px; border-radius: 14px; background: var(--menta); margin-bottom: 26px; }
+.subida input[type="file"] { flex: 1; min-width: 220px; font-size: 14px; }
+.estado { font-size: 14px; color: var(--tinta-2); margin: 10px 0 0; min-height: 20px; }
+.estado.ok { color: var(--verde); }
+.estado.malo { color: #9b2c1a; }
+.vacio { color: var(--tinta-2); padding: 28px 4px; border-bottom: 1px solid var(--linea); }
+
+.oculto-visual { display: none; }
+@media (max-width: 640px) {
+  .fila { grid-template-columns: 1fr; }
+  .fila .acciones { justify-content: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) { .pista span { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="encabezado">
+  <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6c-9.9 0-18 7.1-18 16 0 4.2 1.8 8 4.8 10.9L8 42l9.4-4.1c2.2.7 4.6 1.1 6.6 1.1 9.9 0 18-7.1 18-16S33.9 6 24 6z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/><circle cx="16" cy="22" r="2.6" fill="currentColor"/><circle cx="24" cy="22" r="2.6" fill="currentColor"/><circle cx="32" cy="22" r="2.6" fill="currentColor"/></svg>
+  <h1>Panel · Jacko UVG</h1>
+  <button class="btn-texto oculto" id="salir" type="button">Cerrar sesión</button>
+</header>
+
+<!-- Acceso -->
+<section class="pantalla acceso" id="pantalla-acceso">
+  <h2>Entrar al panel</h2>
+  <p>Solo para el equipo de la universidad.</p>
+  <form id="form-acceso">
+    <input class="campo" id="clave" type="password" placeholder="Contraseña" autocomplete="current-password" required>
+    <button class="boton" type="submit">Entrar</button>
+    <p class="error" id="error-acceso" role="alert"></p>
+  </form>
+</section>
+
+<!-- Contenido -->
+<main class="pantalla oculto" id="pantalla-panel">
+  <nav class="pestanas" role="tablist">
+    <button role="tab" data-vista="resumen" aria-selected="true">Resumen</button>
+    <button role="tab" data-vista="documentos" aria-selected="false">Documentos</button>
+    <button role="tab" data-vista="faq" aria-selected="false">Preguntas frecuentes</button>
+    <button role="tab" data-vista="sin" aria-selected="false">Sin respuesta</button>
+  </nav>
+
+  <section id="vista-resumen">
+    <h2 class="titulo">Últimos 7 días</h2>
+    <p class="subtitulo">Cómo está respondiendo el asistente.</p>
+    <div class="cifras" id="cifras"></div>
+  </section>
+
+  <section id="vista-documentos" class="oculto-visual">
+    <h2 class="titulo">Documentos</h2>
+    <p class="subtitulo">Lo que lee el asistente. Al subir un archivo, se actualiza al instante. Si ya existe, lo reemplaza.</p>
+    <form class="subida" id="form-subida">
+      <input type="file" id="archivo" accept=".md,.txt,.pdf,.docx" aria-label="Archivo a subir">
+      <button class="boton secundario" type="submit" id="boton-subir">Subir y actualizar</button>
+    </form>
+    <p class="estado" id="estado-subida" role="status"></p>
+    <ul class="lista" id="lista-documentos"></ul>
+  </section>
+
+  <section id="vista-faq" class="oculto-visual">
+    <h2 class="titulo">Preguntas frecuentes</h2>
+    <p class="subtitulo">Las preguntas que más se repiten, agrupadas aunque estén escritas distinto.</p>
+    <ul class="lista" id="lista-faq"></ul>
+  </section>
+
+  <section id="vista-sin" class="oculto-visual">
+    <h2 class="titulo">Sin respuesta</h2>
+    <p class="subtitulo">Preguntas que el asistente no pudo responder o que alguien marcó como no útiles. Son la lista de documentos que faltan o hay que mejorar.</p>
+    <ul class="lista" id="lista-sin"></ul>
+  </section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const api = async (ruta, opciones = {}) => {
+  const r = await fetch(`/api${ruta}`, { headers: { "Content-Type": "application/json" }, ...opciones });
+  if (r.status === 401 && !ruta.includes("/login")) { mostrarAcceso(); throw new Error("sesión"); }
+  const cuerpo = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(cuerpo.detail || `Error ${r.status}`);
+  return cuerpo;
+};
+
+function crear(tag, clase, texto) {
+  const el = document.createElement(tag);
+  if (clase) el.className = clase;
+  if (texto !== undefined) el.textContent = texto;
+  return el;
+}
+
+function mostrarAcceso() {
+  $("pantalla-acceso").classList.remove("oculto");
+  $("pantalla-panel").classList.add("oculto");
+  $("salir").classList.add("oculto");
+}
+function mostrarPanel() {
+  $("pantalla-acceso").classList.add("oculto");
+  $("pantalla-panel").classList.remove("oculto");
+  $("salir").classList.remove("oculto");
+  cambiarVista("resumen");
+}
+
+/* ---------- Acceso ---------- */
+$("form-acceso").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  $("error-acceso").textContent = "";
+  try {
+    await api("/admin/login", { method: "POST", body: JSON.stringify({ password: $("clave").value }) });
+    $("clave").value = "";
+    mostrarPanel();
+  } catch (err) {
+    $("error-acceso").textContent = err.message === "sesión" ? "" : err.message;
+  }
+});
+$("salir").addEventListener("click", async () => {
+  await fetch("/api/admin/logout", { method: "POST" });
+  mostrarAcceso();
+});
+
+/* ---------- Pestañas ---------- */
+const VISTAS = ["resumen", "documentos", "faq", "sin"];
+function cambiarVista(nombre) {
+  document.querySelectorAll(".pestanas button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.vista === nombre)));
+  VISTAS.forEach((v) => {
+    const sec = { resumen: "vista-resumen", documentos: "vista-documentos", faq: "vista-faq", sin: "vista-sin" }[v];
+    $(sec).classList.toggle("oculto-visual", v !== nombre);
+  });
+  if (nombre === "resumen") cargarResumen();
+  if (nombre === "documentos") cargarDocumentos();
+  if (nombre === "faq") cargarFaq();
+  if (nombre === "sin") cargarSinRespuesta();
+}
+document.querySelectorAll(".pestanas button").forEach((b) => b.addEventListener("click", () => cambiarVista(b.dataset.vista)));
+
+/* ---------- Resumen ---------- */
+async function cargarResumen() {
+  const r = await api("/admin/resumen?dias=7");
+  const cifras = $("cifras");
+  cifras.innerHTML = "";
+  const tarjetas = [
+    { n: r.preguntas, l: "preguntas" },
+    { n: r.sin_respuesta, l: "sin respuesta", resalte: r.sin_respuesta > 0 },
+    { n: r.util, l: "marcadas como útiles" },
+    { n: r.no_util, l: "marcadas como no útiles" },
+    { n: `US$${r.costo_usd.toFixed(3)}`, l: "costo del modelo" },
+    { n: r.ttft_p50_ms != null ? `${(r.ttft_p50_ms / 1000).toFixed(1)}s` : "—", l: "primer texto (mediana)" },
+    { n: r.documentos, l: "documentos cargados" },
+  ];
+  tarjetas.forEach((t) => {
+    const c = crear("div", "cifra" + (t.resalte ? " resalte" : ""));
+    c.appendChild(crear("div", "n", String(t.n)));
+    c.appendChild(crear("div", "l", t.l));
+    cifras.appendChild(c);
+  });
+}
+
+/* ---------- Documentos ---------- */
+async function cargarDocumentos() {
+  const { documentos } = await api("/admin/documentos");
+  const lista = $("lista-documentos");
+  lista.innerHTML = "";
+  if (!documentos.length) { lista.appendChild(crear("li", "vacio", "Todavía no hay documentos.")); return; }
+  documentos.forEach((d) => {
+    const li = crear("li", "fila");
+    const izq = crear("div");
+    izq.appendChild(crear("div", "principal-t", d.titulo));
+    izq.appendChild(crear("div", "detalle", `${d.ruta} · área ${d.area} · actualizado ${new Date(d.actualizado).toLocaleDateString("es-GT")}`));
+    const acc = crear("div", "acciones");
+    acc.appendChild(crear("span", "pill", `${d.fragmentos} fragmentos`));
+    const borrar = crear("button", "boton peligro", "Borrar");
+    borrar.type = "button";
+    borrar.addEventListener("click", () => borrarDocumento(d));
+    acc.appendChild(borrar);
+    li.append(izq, acc);
+    lista.appendChild(li);
+  });
+}
+
+async function borrarDocumento(d) {
+  if (!confirm(`¿Borrar «${d.titulo}»? El asistente dejará de usarlo.`)) return;
+  try {
+    await api(`/admin/documentos/${encodeURIComponent(d.ruta)}`, { method: "DELETE" });
+    setEstado("Documento borrado.", "ok");
+    cargarDocumentos();
+  } catch (err) {
+    if (err.message !== "sesión") setEstado(err.message, "malo");
+  }
+}
+
+function setEstado(texto, clase) {
+  const e = $("estado-subida");
+  e.textContent = texto;
+  e.className = "estado" + (clase ? " " + clase : "");
+}
+
+$("form-subida").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const archivo = $("archivo").files[0];
+  if (!archivo) { setEstado("Elige un archivo primero.", "malo"); return; }
+  const datos = new FormData();
+  datos.append("archivo", archivo);
+  $("boton-subir").disabled = true;
+  setEstado("Subiendo y actualizando… puede tardar unos segundos.");
+  try {
+    const r = await fetch("/api/admin/documentos", { method: "POST", body: datos });
+    const cuerpo = await r.json().catch(() => ({}));
+    if (r.status === 401) { mostrarAcceso(); return; }
+    if (!r.ok) throw new Error(cuerpo.detail || `Error ${r.status}`);
+    setEstado(`Listo: ${cuerpo.ruta} tiene ${cuerpo.fragmentos} fragmento${cuerpo.fragmentos === 1 ? "" : "s"}${cuerpo.reemplazado ? " (reemplazó la versión anterior)" : ""}.`, "ok");
+    $("archivo").value = "";
+    cargarDocumentos();
+  } catch (err) {
+    setEstado(err.message, "malo");
+  } finally {
+    $("boton-subir").disabled = false;
+  }
+});
+
+/* ---------- Listas de preguntas ---------- */
+function filaPregunta(g, max, marcarSinRespuesta) {
+  const li = crear("li", "fila");
+  const izq = crear("div");
+  izq.appendChild(crear("div", "principal-t", g.pregunta));
+  const partes = [];
+  if (g.sin_respuesta) partes.push(`${g.sin_respuesta} sin respuesta`);
+  if (g.util) partes.push(`${g.util} útil${g.util === 1 ? "" : "es"}`);
+  if (g.no_util) partes.push(`${g.no_util} no útil${g.no_util === 1 ? "" : "es"}`);
+  izq.appendChild(crear("div", "detalle", partes.join(" · ") || "Sin valoraciones"));
+  const acc = crear("div", "acciones");
+  acc.appendChild(crear("span", marcarSinRespuesta ? "pill alerta" : "pill", `${g.veces}×`));
+  li.append(izq, acc);
+  const pista = crear("div", "pista");
+  const barra = crear("span");
+  pista.appendChild(barra);
+  li.appendChild(pista);
+  requestAnimationFrame(() => requestAnimationFrame(() => { barra.style.width = `${Math.max(4, (g.veces / max) * 100)}%`; }));
+  return li;
+}
+
+async function cargarFaq() {
+  const { grupos, total } = await api("/admin/preguntas?dias=30");
+  const lista = $("lista-faq");
+  lista.innerHTML = "";
+  if (!grupos.length) { lista.appendChild(crear("li", "vacio", "Todavía no hay preguntas en los últimos 30 días.")); return; }
+  const max = grupos[0].veces;
+  grupos.forEach((g) => lista.appendChild(filaPregunta(g, max, false)));
+  lista.parentElement.querySelector(".subtitulo").textContent = `${total} preguntas en los últimos 30 días, agrupadas aunque estén escritas distinto.`;
+}
+
+async function cargarSinRespuesta() {
+  const { grupos, total } = await api("/admin/sin-respuesta?dias=30");
+  const lista = $("lista-sin");
+  lista.innerHTML = "";
+  if (!grupos.length) { lista.appendChild(crear("li", "vacio", "Todo lo que se preguntó recientemente tuvo respuesta.")); return; }
+  const max = grupos[0].veces;
+  grupos.forEach((g) => lista.appendChild(filaPregunta(g, max, true)));
+}
+
+/* ---------- Arranque: ¿hay sesión activa? ---------- */
+(async () => {
+  try {
+    await api("/admin/sesion");
+    mostrarPanel();
+  } catch (err) {
+    mostrarAcceso();
+  }
+})();
+</script>
+</body>
+</html>
